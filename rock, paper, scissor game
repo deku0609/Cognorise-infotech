@@ -1,0 +1,109 @@
+import random
+from tkinter import *
+
+# Initialize the main window
+root = Tk()
+root.title("Rock, Paper & Scissors Game")
+root.configure(bg="#2c3e50")
+root.geometry("800x600")
+root.resizable(False, False)
+
+def ply_agn():
+    global u_s, c_s
+    u_s = 0
+    c_s = 0
+    l1.configure(text="")
+    l2.configure(text="")
+    val1.set(u_s)
+    val2.set(c_s)
+
+def men(event):
+    characters = ["Rock 🪨", "Paper 📃", "Scissors ✂"]
+    computer_choice = random.choice(characters)
+    l1.configure(text=f"🤖 Computer choice: {computer_choice}")
+    selected_option = lb1.get(lb1.curselection())
+    
+    global u_s, c_s
+    
+    if selected_option == "Rock 🪨":
+        if computer_choice == "Rock 🪨":
+            l2.configure(text="Result: Match Tie! 🤝")
+        elif computer_choice == "Paper 📃":
+            l2.configure(text="Result: You Lost! 😞")
+            c_s += 1
+            val2.set(c_s)
+        else:
+            l2.configure(text="Result: You Win! 🎉")
+            u_s += 1
+            val1.set(u_s)
+
+    elif selected_option == "Paper 📃":
+        if computer_choice == "Rock 🪨":
+            l2.configure(text="Result: You Win! 🎉")
+            u_s += 1
+            val1.set(u_s)
+        elif computer_choice == "Paper 📃":
+            l2.configure(text="Result: Match Tie! 🤝")
+        else:
+            l2.configure(text="Result: You Lost! 😞")
+            c_s += 1
+            val2.set(c_s)
+
+    elif selected_option == "Scissors ✂":
+        if computer_choice == "Rock 🪨":
+            l2.configure(text="Result: You Lost! 😞")
+            c_s += 1
+            val2.set(c_s)
+        elif computer_choice == "Paper 📃":
+            l2.configure(text="Result: You Win! 🎉")
+            u_s += 1
+            val1.set(u_s)
+        else:
+            l2.configure(text="Result: Match Tie! 🤝")
+
+# Title Label
+Label(root, text="ROCK, PAPER & SCISSORS GAME", font="Helvetica 24 bold", fg="#ecf0f1", bg="#2c3e50").place(x=150, y=20)
+
+# Instruction Label
+Label(root, text="Select an option to start the game", font="Helvetica 18", fg="#ecf0f1", bg="#2c3e50").place(x=220, y=70)
+
+# Your Choice Label
+Label(root, text="Your Choice:", font="Helvetica 16 bold", bg="#2c3e50", fg="#ecf0f1").place(x=340, y=130)
+
+# Labels for Computer Choice and Result
+l1 = Label(root, text="", font="Helvetica 18 bold", bg="#2c3e50", fg="#ecf0f1")
+l1.place(x=260, y=260)
+l2 = Label(root, text="", font="Helvetica 18 bold", bg="#2c3e50", fg="#ecf0f1")
+l2.place(x=300, y=300)
+
+# Listbox for Rock, Paper, Scissors options
+rps = ("Rock 🪨", "Paper 📃", "Scissors ✂")
+lb1 = Listbox(root, height=3, width=20, selectmode=SINGLE, bg="#34495e", fg="#ecf0f1", font="Helvetica 17 bold", bd=0)
+lb1.place(x=260, y=165)
+for option in rps:
+    lb1.insert(END, option)
+lb1.bind('<<ListboxSelect>>', men)
+
+# Scoreboard Labels
+Label(root, text="Scoreboard", font="Helvetica 20 bold", fg="#ecf0f1", bg="#2c3e50").place(x=320, y=340)
+Label(root, text="Your Score", font="Helvetica 14 bold", fg="#ecf0f1", bg="#2c3e50").place(x=270, y=380, width=120)
+Label(root, text="Computer Score", font="Helvetica 14 bold", fg="#ecf0f1", bg="#2c3e50").place(x=390, y=380, width=140)
+
+# Score Variables and Labels
+u_s = 0
+c_s = 0
+val1 = IntVar()
+val1.set(u_s)
+l3 = Label(root, textvariable=val1, font="Helvetica 16 bold", bg="#e74c3c", fg="white", relief=RIDGE)
+l3.place(x=270, y=410, height=50, width=120)
+
+val2 = IntVar()
+val2.set(c_s)
+l4 = Label(root, textvariable=val2, font="Helvetica 16 bold", bg="#e74c3c", fg="white", relief=RIDGE)
+l4.place(x=390, y=410, height=50, width=120)
+
+# Play Again Button
+b1 = Button(root, text="Play Again", font="Helvetica 15 bold", bg="#3498db", fg="white", command=ply_agn, relief=FLAT, activebackground="#2980b9", activeforeground="white")
+b1.place(x=320, y=480, height=50, width=150)
+
+root.mainloop()
